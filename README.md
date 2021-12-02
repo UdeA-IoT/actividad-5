@@ -39,4 +39,6 @@ El esP...
 13. https://learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide/all
 14. https://learn.adafruit.com/adafruit-feather-huzzah-esp8266
 15. https://docs.espressif.com/projects/esp-jumpstart/en/latest/introduction.html
+16. https://docs.platformio.org/en/latest/platforms/espressif8266.html
+17. https://randomnerdtutorials.com/vs-code-platformio-ide-esp32-esp8266-arduino/
 
