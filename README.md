@@ -6,9 +6,6 @@
 
 ## Introducción
 
-
-
-
 ## Requisitos previos
 
 ### Software
@@ -133,8 +130,6 @@ Como resumen, el NodeMCU cuenta con los siguientes pines de entrada y salida:
 
 **Pines digitales**
 
-
-
 Tal y como se muestra en la pagina [Cómo programar NodeMCU con el IDE de Arduino](https://programarfacil.com/esp8266/como-programar-nodemcu-ide-arduino/), el nombre de los pines de NodeMCU tiene una nomenclatura diferente de la que utiliza el ESP8266. 
 
 Por ejemplo los pines **D0**, **D1**, y **D2** en la NodeMCU correponden con **GPIO16**, **5** y **4** en el ESP8266 tal y como se muestra en la siguiente tabla tomada de wikipedia.
@@ -154,6 +149,22 @@ Por ejemplo los pines **D0**, **D1**, y **D2** en la NodeMCU correponden con **G
 |D10 |GPIO1 |
 |D11 |GPIO9 |
 |D12 |GPIO10| |
+
+Por ejemplo si se observa la tabla anterior,se puede notar que el Pin **D4** es equivalente al pint **GPIO4** de modo que, las siguientes dos sentencias son equivalentes:
+
+* **Nomenclatura del NodeMCU**
+  
+```arduino
+pinMode(D2, OUTPUT);
+digitalWrite(D2, HIGH);
+```
+
+* **Nomenclatura del ESP8266**
+  
+```arduino
+pinMode(4, OUTPUT);
+digitalWrite(4, HIGH);
+```
 
 La siguiente figura muestra en detalle los pines digitales:
 
@@ -193,37 +204,138 @@ La siguiente figura detalla estos pines:
 ![alimentacion_nodemcu](alimentacion_nodemcu.png)
 
 
+## Ejemplos
 
+1. Poner a parpadear con un periodo de un segundo un led conectado al puerto **D5**.
 
+**Montaje**
 
+![ejemplo1-nodemcu_bb](ejemplo1-nodemcu_bb.png)
 
+**Codigo**
 
+```arduino
+// Ejemplo tomado de: https://learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide/all#powering-the-thing
 
+#define ESP8266_LED D5 // D5 = 14
 
+void setup() 
+{
+  pinMode(ESP8266_LED, OUTPUT);
+}
 
+void loop() 
+{
+  digitalWrite(ESP8266_LED, HIGH);
+  delay(500);
+  digitalWrite(ESP8266_LED, LOW);
+  delay(500);
+}
+```
 
+**Actividad**: Monte este ejemplo usando el shield para el NodeMCU y el led disponibles en el sistema de desarrollo de grove.
 
+2. Hacer un programa que emplee un potenciómetro y para controlar la intensidad de un led. El programa adema, debe hacer uso del modulo Serial para enviar al monitor serial el valor leído para el potenciómetro. 
 
+![ejemplo2-nodemcu_bb](ejemplo2-nodemcu_bb.png)
 
+**Codigo**
+
+```arduino
+int ledPin = D7; // LED pin (D7 = GPIO17)
+int Pot = A0;
+int val;
+
+void setup() {
+  initPorts();
+  initSerial();
+}
+
+void loop() {
+  val = analogRead(Pot);
+  analogWrite(ledPin, val); 
+  Serial.print("Valor potenciometro: ");
+  Serial.println(val);
+}
+
+/* Funciones de propias de usuario */
+void initPorts() {
+  pinMode(ledPin, OUTPUT);  
+}
+
+void initSerial() {
+  Serial.begin(9600);
+}
+```
+
+**Salida del monitor serial**
+
+![monitor_serial_ejemplo2](ejemplo2-nodemcu-serial.png)
+
+**Actividad**: Monte este ejemplo usando el shield para el NodeMCU y el led disponibles en el sistema de desarrollo de grove.
+
+3. Realizar un ejemplo ejemplo en el cual se ponga a girar un servomotor 180° en ambos sentidos; es decir, primero este gira 180° en sentido horario, luego cuando se completa este ángulo, el sentido de giro se invierte (en sentido antihorario) y gira otra vez 180°. 
+
+**Montaje**
+
+![ejemplo3-nodemcu](ejemplo3-nodemcu_bb.png)
+
+**Nota**: No se recomienda montar el circuito anterior por que el voltaje necesario para alimentar el servomotor es mayor de 3.3V. En la siguiente [pagina](https://www.engineersgarage.com/servo-motor-with-nodemcu-web-control/) se muestra una opción para hacer interfaz entre el microcontrolador y el motor de modo que este problema no se presente.
+
+**Codigo**
+
+```arduino
+#include <Servo.h>
+
+Servo myservo; // create servo object to control a servo
+
+void setup(){
+  myservo.attach(D8); // attach the servo on D8 = GPIO15
+}
+
+void loop(){
+  int pos; // holds the position the servo should move to
+  // goes from 0 degrees to 180 degrees
+  // in steps of 1 degree
+  for(pos = 0; pos <= 180; pos += 1){
+    myservo.write(pos); // move servo to position in var pos
+    delay(15); // waits 15ms to reach the position
+  }
+  // goes from 180 degrees to 0 degrees
+  // in steps of 1 degree
+  for(pos = 180; pos>=0; pos-=1) {
+    myservo.write(pos); // move servo to position in var pos
+    delay(15); // waits 15ms to reach the position
+  }
+}
+```
+En la siguiente [pagina](https://elosciloscopio.com/tutorial-servomotor-arduino-esp8266-y-esp32/) hay un ejemplo muy bueno relacionado con el tema.
+
+## Para profundizar mas
+
+En la pagina... 
 
 ## Referencias
 
-1. https://readthedocs.org/projects/esp8266-arduino-spanish/downloads/pdf/latest/
-2. https://esp8266-arduino-spanish.readthedocs.io/es/latest/
-3. http://codigoelectronica.com/blog/esp8266-esp01-datasheet
-4. https://www.espressif.com/
-5. https://github.com/topics/esp32
-6. https://www.aprendiendoarduino.com/category/presentacion/
-7. https://www.tutorialspoint.com/esp32_for_iot/esp32_for_iot_quick_guide.htm
-8. https://randomnerdtutorials.com/esp32-lora-rfm95-transceiver-arduino-ide/
-9. https://www.arduino.cc/reference/en/libraries/category/communication/
-10. https://www.espressif.com/en/ecosystem/iot-college/courses?field_type_tid=All&field_course_language_tid=All&page=2
-11. https://www.freecodecamp.org/
-12. https://programarfacil.com/esp8266/proyectos-con-esp8266-iot/
-13. https://learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide/all
-14. https://learn.adafruit.com/adafruit-feather-huzzah-esp8266
-15. https://docs.espressif.com/projects/esp-jumpstart/en/latest/introduction.html
-16. https://docs.platformio.org/en/latest/platforms/espressif8266.html
-17. https://randomnerdtutorials.com/vs-code-platformio-ide-esp32-esp8266-arduino/
-18. https://www.luisllamas.es/esp8266-nodemcu/
+1. https://www.esp8266.com/
+2. https://readthedocs.org/projects/esp8266-arduino-spanish/downloads/pdf/latest/
+3. https://esp8266-arduino-spanish.readthedocs.io/es/latest/
+4. http://codigoelectronica.com/blog/esp8266-esp01-datasheet
+5. https://www.espressif.com/
+6. https://github.com/topics/esp32
+7. https://www.aprendiendoarduino.com/category/presentacion/
+8. https://www.tutorialspoint.com/esp32_for_iot/esp32_for_iot_quick_guide.htm
+9. https://randomnerdtutorials.com/esp32-lora-rfm95-transceiver-arduino-ide/
+10. https://www.arduino.cc/reference/en/libraries/category/communication/
+11. https://www.espressif.com/en/ecosystem/iot-college/courses?field_type_tid=All&field_course_language_tid=All&page=2
+12. https://www.freecodecamp.org/
+13. https://programarfacil.com/esp8266/proyectos-con-esp8266-iot/
+14. https://learn.sparkfun.com/tutorials/esp8266-thing-hookup-guide/all
+15. https://learn.adafruit.com/adafruit-feather-huzzah-esp8266
+16. https://docs.espressif.com/projects/esp-jumpstart/en/latest/introduction.html
+17. https://docs.platformio.org/en/latest/platforms/espressif8266.html
+18. https://randomnerdtutorials.com/vs-code-platformio-ide-esp32-esp8266-arduino/
+19. https://www.luisllamas.es/esp8266-nodemcu/
+20. https://programarfacil.com/podcast/como-configurar-esp01-wifi-esp8266/
+21. https://programarfacil.com/podcast/proyectos-iot-con-arduino/
 
