@@ -114,6 +114,17 @@ void loop() {
 
 ![ejemplo3](ejemplo3_prueba.jpg)
 
+A continuación se muestra el resultado del led parpadeando:
+
+![parpadeo_nodemcu](https://programarfacil.com/wp-content/uploads/2017/03/Animacion_blink_nodemcu_small.gif)
+
+**Actividad**: Programar y probar el ejemplo donde se controle el encendido y apagado de un led usando la la NodeMCU. El ejemplo se encuentra en [Cómo programar NodeMCU con el IDE de Arduino](https://programarfacil.com/esp8266/como-programar-nodemcu-ide-arduino/)) y la figura donde se muestra su funcionamiento se muestra a continuación:
+
+![boton_nodemcu](https://programarfacil.com/wp-content/uploads/2017/03/Animacion_boton_nodemcu_small.gif)
+
+
+
+
 #### NodeMCU y manejo de puertos
 
 Reconocer como hacer la conexión del NodeMCU con cualquier despositivo electronico externo, es el primer paso para realizar cualquier proyecto de IoT que involucre este microcontrolador. Por comodidad, colocamos nuevamente el mapa de pines del NodeMCU:
@@ -338,4 +349,5 @@ En la pagina...
 19. https://www.luisllamas.es/esp8266-nodemcu/
 20. https://programarfacil.com/podcast/como-configurar-esp01-wifi-esp8266/
 21. https://programarfacil.com/podcast/proyectos-iot-con-arduino/
+22. https://cdn-reichelt.de/documents/datenblatt/A300/GROVE_SYSTEM.pdf
 
